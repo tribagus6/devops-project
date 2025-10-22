@@ -33,5 +33,5 @@ terraform.rc
 #test gitignore
 config.log
 
-test
+
 
