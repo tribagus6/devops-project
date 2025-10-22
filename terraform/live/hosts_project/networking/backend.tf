@@ -1,6 +1,7 @@
+# !! IMPORTANT: Change the bucket name !!
 terraform {
   backend "gcs" {
-    bucket = "my-unique-terraform-state-bucket-host" # A dedicated bucket for host state
-    prefix = "networking"
+    bucket = "orca-terraform-state-bucket"
+    prefix = "live/hosts_project/networking"
   }
 }

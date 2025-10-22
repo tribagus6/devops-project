@@ -1,8 +1,7 @@
-# This backend configuration is inherited by child directories.
-# You must create the GCS bucket before running terraform init.
+# !! IMPORTANT: Change the bucket name !!
 terraform {
   backend "gcs" {
-    bucket = "my-unique-terraform-state-bucket-dev"
-    prefix = "dev"
+    bucket = "my-terraform-state-bucket"
+    prefix = "live/service_projects/dev/networking"
   }
 }

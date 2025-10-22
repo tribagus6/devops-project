@@ -1,0 +1,51 @@
+Terraform GCP Shared VPC Infrastructure
+
+This repository contains the Terraform code for managing a GCP Shared VPC architecture.
+
+Directory Structure
+
+modules/: Contains reusable, generic modules (shared-vpc-host, gce-instance).
+
+live/: Contains environment-specific configurations that consume the modules.
+
+hosts_project/: Manages the Shared VPC host project.
+
+service_projects/: Manages the service projects (dev, prod).
+
+Deployment Order
+
+You must deploy and destroy this infrastructure in a specific order due to dependencies.
+
+Deployment Order (Creation):
+
+live/hosts_project/networking
+
+Deploys the VPC, subnets, and enables the Shared VPC host.
+
+live/service_projects/dev/networking
+
+Attaches the dev service project to the host.
+
+live/service_projects/dev/compute
+
+Deploys GCE instances into the dev service project using the shared subnets.
+
+Destroy Order (Deletion):
+
+Simply reverse the deployment order:
+
+live/service_projects/dev/compute
+
+live/service_projects/dev/networking
+
+live/hosts_project/networking
+
+Instructions
+
+Create GCS Backend Bucket: Manually create a GCS bucket to store the Terraform state.
+
+Update backend.tf: Replace "my-terraform-state-bucket" in all backend.tf files with your bucket's name.
+
+Update .tfvars: Fill in your specific project_id values in all terraform.tfvars files.
+
+Run terraform init and terraform apply in each directory, following the Deployment Order above.

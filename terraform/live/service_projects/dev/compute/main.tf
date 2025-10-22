@@ -1,36 +1,29 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 5.0"
-    }
-  }
-}
-
 provider "google" {
-  project = var.gcp_project_id
-  region  = var.gcp_region
+  project = var.service_project_id
+  region  = "asia-east1"
 }
 
-# Data source to read the outputs from the host project's state file
-data "terraform_remote_state" "host_vpc" {
+# Get data from the host project's remote state
+data "terraform_remote_state" "host_project" {
   backend = "gcs"
   config = {
-    bucket = "my-unique-terraform-state-bucket-host" # The host project's state bucket
-    prefix = "networking"                            # The prefix for the networking state
+    # !! IMPORTANT: Change the bucket name !!
+    bucket = "orca-terraform-state-bucket"
+    prefix = "live/hosts_project/networking"
   }
 }
 
-# Call the reusable GCE instance module
-module "web_server" {
+# Call the GCE module to create a test VM
+module "dev_instance" {
   source = "../../../../modules/gce-instance"
 
-  # Pass network info from the HOST remote state outputs
-  network    = data.terraform_remote_state.host_vpc.outputs.network_name
-  subnetwork = data.terraform_remote_state.host_vpc.outputs.subnet_name
-
-  # Define instance-specific variables
-  instance_name = "dev-web-server-01"
+  project_id    = var.service_project_id
+  instance_name = "dev-vm-01"
+  zone          = "asia-east1-a"
   machine_type  = "e2-medium"
-  zone          = "${var.gcp_region}-b"
+  
+  # This is the key part: Use the subnet from the remote state
+  subnet_self_link = data.terraform_remote_state.host_project.outputs.subnet_self_links[var.subnet_name]
+  
+  tags = ["dev", "web"]
 }

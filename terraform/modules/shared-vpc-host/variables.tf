@@ -1,29 +1,18 @@
-variable "host_project_id" {
-  description = "The ID of the project where the VPC will be created."
+variable "project_id" {
+  description = "The project ID to host the Shared VPC."
   type        = string
 }
 
 variable "network_name" {
-  description = "The name of the Shared VPC."
+  description = "The name of the VPC network."
   type        = string
 }
 
-variable "subnet_name" {
-  description = "The name of the subnet to share."
-  type        = string
-}
-
-variable "subnet_cidr" {
-  description = "The CIDR range for the subnet."
-  type        = string
-}
-
-variable "region" {
-  description = "The region for the subnet."
-  type        = string
-}
-
-variable "service_projects" {
-  description = "A list of service project IDs to attach to the Shared VPC."
-  type        = list(string)
+variable "subnets" {
+  description = "A map of subnets to create. Key is the subnet name."
+  type = map(object({
+    ip_cidr_range = string
+    region        = string
+  }))
+  default = {}
 }
