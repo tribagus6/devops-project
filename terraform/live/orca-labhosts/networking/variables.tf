@@ -1,4 +1,4 @@
-variable "project_id_host" {
+variable "project_id" {
   description = "The project ID of the host project."
   type        = string
 }

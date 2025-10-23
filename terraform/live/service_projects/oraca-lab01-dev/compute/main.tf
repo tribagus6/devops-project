@@ -14,7 +14,7 @@ data "terraform_remote_state" "host_project" {
 }
 
 # Call the GCE module to create a test VM
-module "dev_instance" {
+module "appbusineess_gce_instance" {
   source = "../../../../modules/gce-instance"
 
   project_id    = var.service_project_id

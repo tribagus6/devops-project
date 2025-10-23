@@ -1,5 +1,5 @@
 provider "google" {
-  project = var.project_id_host
+  project = var.project_id
   region  = "asia-east1"
 }
 
@@ -7,7 +7,7 @@ provider "google" {
 module "shared_vpc" {
   source = "../../../modules/shared-vpc-host"
 
-  project_id   = var.project_id_host
+  project_id   = var.project_id
   network_name = var.network_name
   subnets      = var.subnets
 }

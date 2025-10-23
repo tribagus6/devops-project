@@ -20,9 +20,9 @@ resource "google_compute_instance" "vm" {
     # We leave 'network' blank, as 'subnetwork' is sufficient
     # and handles Shared VPC attachments correctly.
 
-    # Add an access config to get an external IP (optional)
-    access_config {
-    }
+    # # Add an access config to get an external IP (optional)
+    # access_config {
+    # }
   }
 
   service_account {
